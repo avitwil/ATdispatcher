@@ -1,3 +1,23 @@
+Metadata-Version: 2.4
+Name: ATdispatcher
+Version: 1.0.1
+Summary: A flexible Python function dispatcher with rules for values, kwargs, and types.
+Author-email: Avi Twil <avitwil@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/avitwil/ATdispatcher
+Project-URL: Repository, https://github.com/avitwil/ATdispatcher
+Project-URL: Issues, https://github.com/avitwil/ATdispatcher/issues
+Keywords: dispatcher,function routing,dynamic dispatch,python
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
 
 # ATdispatcher
 

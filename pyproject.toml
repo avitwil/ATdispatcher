@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ATdispatcher"
-version = "0.1.0"
+version = "1.0.1"
 description = "A flexible Python function dispatcher with rules for values, kwargs, and types."
 readme = "README.md"
 authors = [
