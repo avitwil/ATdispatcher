@@ -22,6 +22,8 @@ Currently, ATdispatcher is a standalone module. You can include it in your proje
 
 ```bash
 git clone https://github.com/avitwil/ATdispatcher.git
+or
+pip install ATdispatcher
 ```
 
 Or copy `ATdispatcher.py` into your project directory.
