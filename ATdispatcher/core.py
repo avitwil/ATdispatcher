@@ -72,13 +72,28 @@ class FuncDispatcher:
                 ok = True
                 for name, value in bound.arguments.items():
                     ann = sig.parameters[name].annotation
-                    if ann is not inspect._empty and not isinstance(value, ann):
+                    if ann is inspect.Parameter.empty:
+                        continue
+                    try:
+                        match = isinstance(value, ann)
+                    except TypeError:
+                        # `ann` is something isinstance() can't handle directly
+                        # (e.g. a typing generic like List[int]) - treat this
+                        # variant as not matching rather than blowing up.
+                        match = False
+                    if not match:
                         ok = False
                         break
-                if ok:
-                    return func(*bound.args, **bound.kwargs)
             except TypeError:
+                # Binding/type-checking failed for this variant - try the next one.
                 continue
+
+            if ok:
+                # Call the matched variant *outside* the except block above, so a
+                # genuine TypeError raised by the variant's own body propagates to
+                # the caller instead of being mistaken for "this variant didn't
+                # match" and silently trying the next one.
+                return func(*bound.args, **bound.kwargs)
         raise TypeError("No matching function signature found")
 
 
@@ -161,15 +176,29 @@ class MethodDispatcher:
                 ok = True
                 for param in params:
                     ann = param.annotation
-                    if ann is not inspect._empty and not isinstance(bound_args[param.name], ann):
+                    if ann is inspect.Parameter.empty:
+                        continue
+                    try:
+                        match = isinstance(bound_args[param.name], ann)
+                    except TypeError:
+                        # `ann` is something isinstance() can't handle directly
+                        # (e.g. a typing generic like List[int]) - treat this
+                        # variant as not matching rather than blowing up.
+                        match = False
+                    if not match:
                         ok = False
                         break
 
-                if ok:
-                    return func(**bound_args)
-
-            except Exception:
+            except TypeError:
+                # Binding/type-checking failed for this variant - try the next one.
                 continue
+
+            if ok:
+                # Call the matched variant *outside* the except block above, so a
+                # genuine TypeError raised by the variant's own body propagates to
+                # the caller instead of being mistaken for "this variant didn't
+                # match" and silently trying the next one.
+                return func(**bound_args)
 
         raise TypeError("No matching function signature found")
 
